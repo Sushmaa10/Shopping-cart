@@ -1,46 +1,136 @@
-# Getting Started with Create React App
+# Shopping Cart Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React and Redux shopping cart application built with TypeScript that calculates bills with special offers and discounts.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Product Management**: Display products with prices and add them to cart
+- **Shopping Cart**: Add/remove items, adjust quantities
+- **Special Offers**: Automatic calculation of discounts and savings
+- **Bill Calculation**: Shows subtotal, savings, and final total
+- **Responsive Design**: Built with Tailwind CSS for modern UI
+- **TypeScript**: Full type safety throughout the application
+- **Redux Toolkit**: Modern state management with Redux
 
-### `npm start`
+## Special Offers Implemented
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. **Cheese**: Buy One Get One Free
+2. **Soup + Bread**: When you buy Soup, Bread is half price
+3. **Butter**: Get a third off (33.33% discount)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Technologies Used
 
-### `npm test`
+- React 18
+- TypeScript
+- Redux Toolkit
+- React Redux
+- Tailwind CSS
+- Create React App
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js (version 14 or higher)
+- npm or yarn
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository:
+```bash
+git clone <your-repo-url>
+cd shopping-cart
+```
 
-### `npm run eject`
+2. Install dependencies:
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Start the development server:
+```bash
+npm start
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Available Scripts
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- `npm start` - Runs the app in development mode
+- `npm test` - Launches the test runner
+- `npm run build` - Builds the app for production
+- `npm run eject` - Ejects from Create React App (one-way operation)
 
-## Learn More
+## Project Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+src/
+├── components/          # React components
+│   ├── ProductCard.tsx
+│   ├── CartItem.tsx
+│   ├── ShoppingCart.tsx
+│   └── SpecialOffers.tsx
+├── store/              # Redux store and slices
+│   ├── store.ts
+│   └── cartSlice.ts
+├── types/              # TypeScript type definitions
+│   └── index.ts
+├── data/               # Static data
+│   └── products.ts
+└── App.tsx             # Main application component
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## How It Works
+
+1. **Products**: Users can view all available products with their prices
+2. **Adding Items**: Click "Add" button to add products to cart
+3. **Quantity Management**: Use +/- buttons to adjust quantities
+4. **Automatic Calculations**: Special offers are automatically applied
+5. **Bill Summary**: View subtotal, savings, and final total
+
+## Special Offer Logic
+
+- **Buy One Get One Free**: For every 2 items, 1 is free
+- **Half Price**: Related product gets 50% discount
+- **Percentage Discount**: Fixed percentage off the total price
+
+## Testing
+
+Run the test suite:
+```bash
+npm test
+```
+
+## Building for Production
+
+```bash
+npm run build
+```
+
+This creates a `build` folder with optimized production files.
+
+## Deployment
+
+### Netlify
+1. Connect your GitHub repository to Netlify
+2. Set build command: `npm run build`
+3. Set publish directory: `build`
+
+### Firebase Hosting
+1. Install Firebase CLI: `npm install -g firebase-tools`
+2. Login: `firebase login`
+3. Initialize: `firebase init hosting`
+4. Build: `npm run build`
+5. Deploy: `firebase deploy`
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
