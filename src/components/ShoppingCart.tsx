@@ -74,19 +74,12 @@ const ShoppingCart: React.FC = () => {
                   </span>
                 </div>
                 
-                {totalSavings > 0 && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-medium text-red-600">Savings:</span>
-                    <span className="text-lg font-semibold text-red-600">
-                      £ {totalSavings.toFixed(2)}
-                    </span>
-                  </div>
-                )}
+                {/* Removed explicit Savings row to show only Total Amount */}
                 
                 <div className="flex justify-between items-center pt-3 border-t">
                   <span className="text-xl font-bold text-gray-800">Total Amount:</span>
                   <span className="text-2xl font-bold text-blue-600">
-                    £ {totalAmount.toFixed(2)}
+                    £ {subtotal.toFixed(2)}
                   </span>
                 </div>
               </div>

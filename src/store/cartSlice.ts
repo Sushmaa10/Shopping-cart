@@ -19,8 +19,9 @@ function computeSavingsForItem(item: CartItem, items: CartItem[], offers: Specia
 		
 		if (offer.productId === product.id) {
 			if (offer.type === 'buyOneGetOneFree') {
-				
-				savings += 0;
+				// For BOGO 1:1, each paid unit gets one free unit
+				const freeUnits = quantity;
+				savings += freeUnits * product.price;
 			}
 			if (offer.type === 'percentageDiscount' && offer.discountPercentage) {
 				savings += (product.price * quantity * offer.discountPercentage) / 100;

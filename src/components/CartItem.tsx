@@ -21,10 +21,11 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 	};
 
 	
-	const freeCheeseUnits = item.product.id === 'cheese' ? item.quantity : 0; // Buy n -> get n free
-	const cheeseOfferNote = freeCheeseUnits > 0
-		? `${freeCheeseUnits} ${freeCheeseUnits > 1 ? 'Cheeses' : 'Cheese'} free`
-		: '';
+	const isCheese = item.product.id === 'cheese';
+	// For display: show one free Cheese per paid Cheese
+	const freeCheeseUnits = isCheese ? item.quantity : 0;
+	const paidCheeseUnits = isCheese ? item.quantity : 0;
+    const displayCheeseSaved = isCheese ? item.product.price * freeCheeseUnits : 0;
 
 	
 	let breadHalfNote = '';
@@ -63,25 +64,39 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 			</div>
 			
 			<div className="space-y-1 text-sm">
-				<p className="text-gray-700">
-					Item price {item.product.unit}{item.product.price.toFixed(2)} × {item.quantity} = {item.product.unit}{item.itemPrice.toFixed(2)}
-				</p>
-				{item.product.id === 'cheese' && (
-					<p className="text-gray-500">{cheeseOfferNote}</p>
-				)}
-				{breadHalfNote && (
-					<p className="text-gray-500">{breadHalfNote}</p>
-				)}
-				{item.savings > 0 && (
-					<div className="space-y-0.5">
-						<p className="text-red-600 font-medium">
-							Savings {item.product.unit}{item.savings.toFixed(2)}
+				{isCheese ? (
+					<>
+						<p className="text-gray-700">Unit Price: {item.product.unit}{item.product.price.toFixed(2)}</p>
+						<p className="text-gray-700">
+							Quantity: {item.quantity} ({paidCheeseUnits} paid + {freeCheeseUnits} free)
 						</p>
-					</div>
+						<p className="text-gray-700">
+							Item cost (before savings): {item.product.unit}{(item.product.price * (paidCheeseUnits + freeCheeseUnits)).toFixed(2)}
+						</p>
+						<p className="text-red-600 font-medium">
+							You saved: {item.product.unit}{displayCheeseSaved.toFixed(2)}
+						</p>
+					</>
+				) : (
+					<>
+						<p className="text-gray-700">
+							Item price {item.product.unit}{item.product.price.toFixed(2)} × {item.quantity} = {item.product.unit}{item.itemPrice.toFixed(2)}
+						</p>
+						{breadHalfNote && (
+							<p className="text-gray-500">{breadHalfNote}</p>
+						)}
+						{item.savings > 0 && (
+							<div className="space-y-0.5">
+								<p className="text-red-600 font-medium">
+									Savings {item.product.unit}{item.savings.toFixed(2)}
+								</p>
+							</div>
+						)}
+						<p className="text-lg font-semibold text-gray-800">
+							Item cost {item.product.unit}{item.itemCost.toFixed(2)}
+						</p>
+					</>
 				)}
-				<p className="text-lg font-semibold text-gray-800">
-					Item cost {item.product.unit}{item.itemCost.toFixed(2)}
-				</p>
 			</div>
 		</div>
 	);
