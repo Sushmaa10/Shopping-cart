@@ -10,7 +10,7 @@ import { clearCart } from '../store/cartSlice';
 
 const ShoppingCart: React.FC = () => {
   const dispatch = useDispatch();
-  const { items, subtotal, totalSavings, totalAmount } = useSelector(
+  const { items, subtotal } = useSelector(
     (state: RootState) => state.cart
   );
 
