@@ -16,10 +16,12 @@ function computeSavingsForItem(item: CartItem, items: CartItem[], offers: Specia
 	let savings = 0;
 
 	for (const offer of offers) {
-		
+		// Direct offers on the product itself
 		if (offer.productId === product.id) {
 			if (offer.type === 'buyOneGetOneFree') {
 				// For BOGO 1:1, each paid unit gets one free unit
+				// So if quantity is 1, you get 1 free; if quantity is 2, you get 2 free
+				// The savings is the price of the free units
 				const freeUnits = quantity;
 				savings += freeUnits * product.price;
 			}
@@ -28,7 +30,7 @@ function computeSavingsForItem(item: CartItem, items: CartItem[], offers: Specia
 			}
 		}
 
-		
+		// Related product offers (like bread getting half price when soup is bought)
 		if (offer.type === 'halfPrice' && offer.relatedProductId === product.id) {
 			const trigger = items.find(ci => ci.product.id === offer.productId);
 			if (trigger && trigger.quantity > 0 && quantity > 0) {
@@ -43,7 +45,20 @@ function computeSavingsForItem(item: CartItem, items: CartItem[], offers: Specia
 
 function recomputeCart(state: CartState) {
 	for (const item of state.items) {
-		item.itemPrice = item.product.price * item.quantity;
+		// For BOGO offers, we need to calculate the total value including free items
+		let totalValue = item.product.price * item.quantity;
+		
+		// Check if this item has a BOGO offer
+		const bogoOffer = state.offers.find(offer => 
+			offer.productId === item.product.id && offer.type === 'buyOneGetOneFree'
+		);
+		
+		if (bogoOffer) {
+			// For BOGO, the total value should include free items
+			totalValue = item.product.price * (item.quantity * 2);
+		}
+		
+		item.itemPrice = totalValue;
 		item.savings = computeSavingsForItem(item, state.items, state.offers);
 		item.itemCost = item.itemPrice - item.savings;
 	}

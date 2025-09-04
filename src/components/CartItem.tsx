@@ -20,20 +20,26 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 		dispatch(removeItem(item.product.id));
 	};
 
+	// Generate offer notes for different product types
+	let offerNote = '';
 	
-	const isCheese = item.product.id === 'cheese';
-	// For display: show one free Cheese per paid Cheese
-	const freeCheeseUnits = isCheese ? item.quantity : 0;
-	const paidCheeseUnits = isCheese ? item.quantity : 0;
-    const displayCheeseSaved = isCheese ? item.product.price * freeCheeseUnits : 0;
-
-	
-	let breadHalfNote = '';
-	if (item.product.id === 'bread') {
+	if (item.product.id === 'cheese') {
+		// Buy One Get One Free offer
+		const freeUnits = item.quantity;
+		if (freeUnits > 0) {
+			offerNote = `Buy 1 Get 1 Free: ${freeUnits} ${freeUnits > 1 ? 'Cheeses' : 'Cheese'} free`;
+		}
+	} else if (item.product.id === 'bread') {
+		// Half price when soup is bought
 		const soup = items.find(ci => ci.product.id === 'soup');
 		if (soup && soup.quantity > 0 && item.quantity > 0) {
 			const applicable = Math.min(soup.quantity, item.quantity);
-			breadHalfNote = `Half price on ${applicable} ${applicable > 1 ? 'Breads' : 'Bread'}`;
+			offerNote = `Half price on ${applicable} ${applicable > 1 ? 'Breads' : 'Bread'} (with Soup)`;
+		}
+	} else if (item.product.id === 'butter') {
+		// 33.33% discount
+		if (item.savings > 0) {
+			offerNote = `33.33% discount applied`;
 		}
 	}
 
@@ -64,39 +70,17 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 			</div>
 			
 			<div className="space-y-1 text-sm">
-				{isCheese ? (
-					<>
-						<p className="text-gray-700">Unit Price: {item.product.unit}{item.product.price.toFixed(2)}</p>
-						<p className="text-gray-700">
-							Quantity: {item.quantity} ({paidCheeseUnits} paid + {freeCheeseUnits} free)
-						</p>
-						<p className="text-gray-700">
-							Item cost (before savings): {item.product.unit}{(item.product.price * (paidCheeseUnits + freeCheeseUnits)).toFixed(2)}
-						</p>
-						<p className="text-red-600 font-medium">
-							You saved: {item.product.unit}{displayCheeseSaved.toFixed(2)}
-						</p>
-					</>
-				) : (
-					<>
-						<p className="text-gray-700">
-							Item price {item.product.unit}{item.product.price.toFixed(2)} × {item.quantity} = {item.product.unit}{item.itemPrice.toFixed(2)}
-						</p>
-						{breadHalfNote && (
-							<p className="text-gray-500">{breadHalfNote}</p>
-						)}
-						{item.savings > 0 && (
-							<div className="space-y-0.5">
-								<p className="text-red-600 font-medium">
-									Savings {item.product.unit}{item.savings.toFixed(2)}
-								</p>
-							</div>
-						)}
-						<p className="text-lg font-semibold text-gray-800">
-							Item cost {item.product.unit}{item.itemCost.toFixed(2)}
-						</p>
-					</>
+				<p className="text-gray-700">
+					Item price: {item.product.unit}{item.product.price.toFixed(2)} × {item.quantity} = {item.product.unit}{item.itemPrice.toFixed(2)}
+				</p>
+				
+				{offerNote && (
+					<p className="text-blue-600 font-medium">{offerNote}</p>
 				)}
+				
+				<p className="text-lg font-semibold text-gray-800">
+					Final cost: {item.product.unit}{item.itemCost.toFixed(2)}
+				</p>
 			</div>
 		</div>
 	);
